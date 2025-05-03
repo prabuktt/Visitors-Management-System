@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { UserRole } = require('../../models');
+const models = require('../../models');
 
 
 const statusToString = (status) => (status === 1 ? 'Active' : 'Inactive');
@@ -11,22 +11,22 @@ const statusToInteger = (status) => {
 };
 
 // Add new Role
-const addRole =  async (req, res) => {
+exports.create = function (req, res) {
   console.log('Request body:', req.body);
   try {
     const { roleName, status = 'Active' } = req.body;
     if (!roleName || !roleName.trim()) {
       return res.status(400).json({ error: 'Role name is required' });
+      return res.send({success: false, error: 'Role name is required.'})
     }
-    const role = await UserRole.create({
-      role: roleName,
+
+    const UserRole = await models.UserRole.create({
+      name: roleName,
       status: statusToInteger(status)
     });
-    res.status(201).json({
-      id: role.id,
-      roleName: role.role,
-      status: statusToString(role.status)
-    });
+
+    return res.send({success: true, result: UserRole})
+
   } catch (error) {
     console.error('Error adding role:', error);
     res.status(400).json({ error: error.message || 'Failed to add role' });

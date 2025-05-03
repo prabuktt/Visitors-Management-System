@@ -1,18 +1,19 @@
 // api/userRole/index.js
 const express = require('express');
 const router = express.Router();
-const { addRole, getRole, updateRole, deleteRole } = require('./userRole');
+const cotroller = require('./userrole');
 
 // Add Role
-router.post('/addrole', addRole);
+router.post('/create', cotroller.create);
 
 // Get All Roles
-router.get('/getroles', getRole);
+router.get('/list', AbortController.list);
+router.get('/:id', cotroller.get);
 
 // Update Role
-router.put('/updaterole/:id', updateRole);
+router.put('/:id', cotroller.update);
 
 // Delete Role
-router.delete('/deleterole/:id', deleteRole);
+router.delete('/:id', cotroller.delete);
 
 module.exports = router;
